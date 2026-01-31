@@ -110,7 +110,9 @@ const translations: Translations = {
   
   // Related
   'related.description': { nl: 'Meer nieuws over dezelfde onderwerpen (min. 4 overlappende tags)', en: 'More news about the same topics (min. 4 overlapping tags)' },
+  'related.descriptionFlexible': { nl: 'Meer nieuws over gerelateerde onderwerpen', en: 'More news about related topics' },
   'related.none': { nl: 'Geen gerelateerde artikelen gevonden met voldoende overlappende tags', en: 'No related articles found with enough overlapping tags' },
+  'related.noneFlexible': { nl: 'Geen gerelateerde artikelen gevonden', en: 'No related articles found' },
   
   // Onboarding
   'onboarding.welcome': { nl: 'Welkom bij', en: 'Welcome to' },

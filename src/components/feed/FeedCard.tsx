@@ -15,6 +15,7 @@ export const FeedCard = ({ card, isActive }: FeedCardProps) => {
   const [sheetType, setSheetType] = useState<"people" | "sport" | "related" | "sources" | "comments" | "team" | null>(
     null,
   );
+  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [commentCount, setCommentCount] = useState(() => {
     // Get initial comment count from localStorage
     const stored = localStorage.getItem(`comments_${card.id}`);
@@ -30,6 +31,10 @@ export const FeedCard = ({ card, isActive }: FeedCardProps) => {
   const handleOpenSheet = (type: "people" | "sport" | "related" | "sources" | "comments" | "team") => {
     setSheetType(type);
     setSheetOpen(true);
+  };
+
+  const handleSelectTeam = (teamName: string) => {
+    setSelectedTeam(teamName);
   };
 
   const handleCommentCountChange = useCallback((count: number) => {
@@ -49,12 +54,12 @@ export const FeedCard = ({ card, isActive }: FeedCardProps) => {
       {!card.imageUrl && <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30" />}
 
       {/* Content */}
-      <NewsCardContent card={card} />
+      <NewsCardContent card={card} isActive={isActive} />
 
       {/* Action buttons - split into left (card-specific) and right (app actions) */}
       {!card.isAd && (
         <>
-          <CardActionsLeft card={card} onOpenSheet={handleOpenSheet} />
+          <CardActionsLeft card={card} onOpenSheet={handleOpenSheet} onSelectTeam={handleSelectTeam} />
           <CardActionsRight card={card} onOpenSheet={handleOpenSheet} commentCount={commentCount} />
         </>
       )}
@@ -65,6 +70,7 @@ export const FeedCard = ({ card, isActive }: FeedCardProps) => {
         onOpenChange={setSheetOpen}
         type={sheetType}
         card={card}
+        selectedTeam={selectedTeam}
         onCommentCountChange={handleCommentCountChange}
       />
     </div>

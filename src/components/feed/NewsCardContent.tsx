@@ -7,7 +7,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 interface NewsCardContentProps {
   card: NewsCard;
-  isActive: boolean;
+  isActive?: boolean;
 }
 
 const categoryColors: Record<SportCategory, string> = {
