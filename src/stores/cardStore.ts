@@ -38,23 +38,15 @@ class CardStore {
     this.listeners.forEach(listener => listener());
   }
 
-  // Find related cards with flexible matching - returns cards with any overlap
-  // Sorted by overlap count (desc), then by time (newest first)
-  findRelatedCards(card: NewsCard, minOverlap: number = 1): NewsCard[] {
+  // Find related cards based on tag overlaps (min 4), sorted by time (LIFO)
+  findRelatedCards(card: NewsCard, minOverlap: number = 4): NewsCard[] {
     const cardTagNames = new Set(card.tags.map(t => t.name.toLowerCase()));
-    const cardCategory = card.primaryCategory;
     
     const relatedWithScore = Array.from(this.cards.values())
       .filter(c => c.id !== card.id)
       .map(c => {
         const cTagNames = c.tags.map(t => t.name.toLowerCase());
-        let overlap = cTagNames.filter(name => cardTagNames.has(name)).length;
-        
-        // Bonus point for same category
-        if (c.primaryCategory === cardCategory) {
-          overlap += 0.5;
-        }
-        
+        const overlap = cTagNames.filter(name => cardTagNames.has(name)).length;
         return { card: c, overlap };
       })
       .filter(({ overlap }) => overlap >= minOverlap)
@@ -62,8 +54,7 @@ class CardStore {
         // First by overlap count (desc), then by time (LIFO - newest first)
         if (b.overlap !== a.overlap) return b.overlap - a.overlap;
         return new Date(b.card.publishedAt).getTime() - new Date(a.card.publishedAt).getTime();
-      })
-      .slice(0, 10); // Limit to 10 related cards
+      });
 
     return relatedWithScore.map(({ card }) => card);
   }
