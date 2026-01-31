@@ -36,17 +36,24 @@ export const CardActionsRight = ({ card, onOpenSheet, commentCount }: CardAction
   };
 
   const handleShare = async () => {
-    const shareUrl = `${window.location.origin}/card/${card.id}`;
+    // Use the original source URL for sharing, or fallback to card page
+    const shareUrl = card.sourceUrl || `${window.location.origin}/card/${card.id}`;
+    const shareText = `${card.headline}\n\n${card.summary.slice(0, 200)}${card.summary.length > 200 ? '...' : ''}`;
     
     if (navigator.share && /mobile|android|iphone/i.test(navigator.userAgent)) {
       try {
         await navigator.share({
           title: card.headline,
-          text: card.summary,
+          text: shareText,
           url: shareUrl,
         });
+        setShareSuccess(true);
+        setTimeout(() => setShareSuccess(false), 2000);
       } catch (err) {
-        await copyToClipboard(shareUrl);
+        // User cancelled or error - fallback to clipboard
+        if ((err as Error).name !== 'AbortError') {
+          await copyToClipboard(shareUrl);
+        }
       }
     } else {
       await copyToClipboard(shareUrl);
@@ -61,6 +68,7 @@ export const CardActionsRight = ({ card, onOpenSheet, commentCount }: CardAction
       setTimeout(() => setShareSuccess(false), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
+      toast.error('Could not copy link');
     }
   };
 

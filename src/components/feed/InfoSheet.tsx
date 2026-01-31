@@ -15,6 +15,7 @@ interface InfoSheetProps {
   onOpenChange: (open: boolean) => void;
   type: 'people' | 'sport' | 'related' | 'sources' | 'comments' | 'team' | null;
   card: NewsCard;
+  selectedTeam?: string | null;
   onCommentCountChange?: (count: number) => void;
 }
 
@@ -26,7 +27,7 @@ interface WikiData {
   sourceUrl: string;
 }
 
-export const InfoSheet = ({ open, onOpenChange, type, card, onCommentCountChange }: InfoSheetProps) => {
+export const InfoSheet = ({ open, onOpenChange, type, card, selectedTeam, onCommentCountChange }: InfoSheetProps) => {
   const { t } = useLanguage();
   const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
 
@@ -104,7 +105,7 @@ export const InfoSheet = ({ open, onOpenChange, type, card, onCommentCountChange
             />
           )}
           {type === 'team' && !selectedPlayer && (
-            <TeamContent card={card} onOpenPlayer={handleOpenPlayer} />
+            <TeamContent card={card} onOpenPlayer={handleOpenPlayer} selectedTeam={selectedTeam} />
           )}
           {type === 'team' && selectedPlayer && (
             <PeopleContent card={card} playerName={selectedPlayer} />
@@ -320,8 +321,8 @@ const RelatedContent = ({ card, onOpenChange }: { card: NewsCard; onOpenChange: 
   const { t } = useLanguage();
   const navigate = useNavigate();
   
-  // Find related cards based on tag overlaps (min 4), sorted by time (LIFO)
-  const relatedCards = cardStore.findRelatedCards(card, 4);
+  // Find related cards - now with flexible matching (min 1 overlap)
+  const relatedCards = cardStore.findRelatedCards(card, 1);
 
   const handleCardClick = (cardId: string) => {
     onOpenChange(false);
@@ -331,12 +332,12 @@ const RelatedContent = ({ card, onOpenChange }: { card: NewsCard; onOpenChange: 
   return (
     <div className="space-y-3">
       <p className="text-sm text-muted-foreground mb-4">
-        {t('related.description')}
+        {t('related.descriptionFlexible')}
       </p>
       
       {relatedCards.length === 0 ? (
         <p className="text-center text-muted-foreground py-8">
-          {t('related.none')}
+          {t('related.noneFlexible')}
         </p>
       ) : (
         relatedCards.map((relatedCard) => (

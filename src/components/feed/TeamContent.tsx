@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 interface TeamContentProps {
   card: NewsCard;
   onOpenPlayer: (playerName: string) => void;
+  selectedTeam?: string | null;
 }
 
 interface TeamData {
@@ -64,13 +65,16 @@ const getMockPlayers = (teamName: string): MockPlayer[] => {
   ];
 };
 
-export const TeamContent = ({ card, onOpenPlayer }: TeamContentProps) => {
+export const TeamContent = ({ card, onOpenPlayer, selectedTeam }: TeamContentProps) => {
   const { t, language } = useLanguage();
   const [teamData, setTeamData] = useState<TeamData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const teamTag = card.tags.find(tag => tag.type === 'team');
+  // Use selected team if provided, otherwise use first team tag
+  const teamTag = selectedTeam 
+    ? card.tags.find(tag => tag.type === 'team' && tag.name === selectedTeam) || card.tags.find(tag => tag.type === 'team')
+    : card.tags.find(tag => tag.type === 'team');
   const teamName = teamTag?.name || '';
   const players = getMockPlayers(teamName);
 
