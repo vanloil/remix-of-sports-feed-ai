@@ -1,0 +1,256 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* DPG Media inspired - clean, bold, sporty */
+    --background: 0 0% 100%;
+    --foreground: 220 20% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
+
+    /* Primary - DPG Sport Blue */
+    --primary: 215 90% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Warm gray */
+    --secondary: 220 15% 95%;
+    --secondary-foreground: 220 20% 25%;
+
+    --muted: 220 15% 96%;
+    --muted-foreground: 220 10% 45%;
+
+    /* Accent - Sport Energy Orange */
+    --accent: 25 95% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 215 90% 45%;
+
+    --radius: 1rem;
+
+    /* Custom sport category colors */
+    --sport-football: 145 70% 40%;
+    --sport-basketball: 25 90% 55%;
+    --sport-tennis: 55 85% 50%;
+    --sport-chess: 270 60% 50%;
+    --sport-cycling: 340 75% 55%;
+    --sport-motorsport: 0 85% 55%;
+    --sport-esports: 280 80% 60%;
+    --sport-local: 200 70% 50%;
+
+    /* Feed specific */
+    --feed-bg: 220 20% 7%;
+    --card-overlay: linear-gradient(to top, hsl(220 20% 5% / 0.95) 0%, hsl(220 20% 5% / 0.6) 40%, transparent 70%);
+    --card-overlay-top: linear-gradient(to bottom, hsl(220 20% 5% / 0.5) 0%, transparent 30%);
+
+    /* Shadows */
+    --shadow-card: 0 4px 20px -4px hsl(220 20% 10% / 0.15);
+    --shadow-button: 0 2px 10px -2px hsl(220 20% 10% / 0.2);
+    --shadow-glow: 0 0 30px -5px hsl(var(--primary) / 0.4);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 20% 7%;
+    --foreground: 0 0% 98%;
+
+    --card: 220 20% 10%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 220 20% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 215 85% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 20% 15%;
+    --secondary-foreground: 0 0% 90%;
+
+    --muted: 220 20% 18%;
+    --muted-foreground: 220 10% 60%;
+
+    --accent: 25 95% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 20% 18%;
+    --input: 220 20% 18%;
+    --ring: 215 85% 55%;
+
+    --feed-bg: 220 20% 4%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Hide scrollbar for feed */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Smooth scroll snap for feed */
+  .scroll-snap-container {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .scroll-snap-item {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+}
+
+@layer utilities {
+  /* Text shadow for readability on images */
+  .text-shadow {
+    text-shadow: 0 2px 10px hsl(220 20% 5% / 0.8);
+  }
+
+  .text-shadow-sm {
+    text-shadow: 0 1px 4px hsl(220 20% 5% / 0.6);
+  }
+
+  /* Glassmorphism */
+  .glass {
+    background: hsl(0 0% 100% / 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .glass-dark {
+    background: hsl(220 20% 5% / 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Sport tag colors */
+  .tag-football { @apply bg-[hsl(var(--sport-football))]; }
+  .tag-basketball { @apply bg-[hsl(var(--sport-basketball))]; }
+  .tag-tennis { @apply bg-[hsl(var(--sport-tennis))] text-black; }
+  .tag-chess { @apply bg-[hsl(var(--sport-chess))]; }
+  .tag-cycling { @apply bg-[hsl(var(--sport-cycling))]; }
+  .tag-motorsport { @apply bg-[hsl(var(--sport-motorsport))]; }
+  .tag-esports { @apply bg-[hsl(var(--sport-esports))]; }
+  .tag-local { @apply bg-[hsl(var(--sport-local))]; }
+
+  /* Honeycomb grid for team players */
+  .honeycomb-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .honeycomb-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+    animation: fade-in 0.3s ease-out forwards;
+    opacity: 0;
+  }
+
+  .honeycomb-cell:hover {
+    background: hsl(var(--muted));
+    transform: scale(1.05);
+  }
+
+  /* Offset every other row for honeycomb effect */
+  .honeycomb-grid > .honeycomb-cell:nth-child(4n+3),
+  .honeycomb-grid > .honeycomb-cell:nth-child(4n+4) {
+    margin-top: -0.5rem;
+  }
+
+  /* Animations */
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px -5px hsl(var(--primary) / 0.4);
+    }
+    50% {
+      box-shadow: 0 0 30px -5px hsl(var(--primary) / 0.6);
+    }
+  }
+
+  @keyframes bounce-subtle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.4s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out forwards;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-bounce-subtle {
+    animation: bounce-subtle 2s ease-in-out infinite;
+  }
+}
